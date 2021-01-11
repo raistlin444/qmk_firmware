@@ -70,18 +70,16 @@ void matrix_init_user(void) {
 
 // This runs every matrix scan (every 'frame')
 void rgb_matrix_indicators_user(void) {
-    led_flags_t flags = rgb_matrix_get_flags();
+//    led_flags_t flags = rgb_matrix_get_flags();
 
     // If we're in either keylight or underglow modes (but not both simultaneously)
-    if (HAS_FLAGS(flags, LED_FLAG_KEYLIGHT) != HAS_FLAGS(flags, LED_FLAG_UNDERGLOW)) {
+//    if (HAS_FLAGS(flags, LED_FLAG_KEYLIGHT) != HAS_FLAGS(flags, LED_FLAG_UNDERGLOW)) {
 
         // This fixes a bug where the caps lock LED flickers when toggled in either keylight or underglow modes
-        if (host_keyboard_leds() & (1 << USB_LED_CAPS_LOCK)) {
-            rgb_matrix_set_color(CAPS_LOCK_LED_ID, RGB_WHITE);
-        } else {
-            rgb_matrix_set_color(CAPS_LOCK_LED_ID, 0, 0, 0);
-        }
-    }
+//        if (host_keyboard_leds() & (1 << USB_LED_CAPS_LOCK)) {
+//            rgb_matrix_set_color(CAPS_LOCK_LED_ID, RGB_WHITE);
+//        } 	
+//    }
 }
 
 // This runs code every time that the layers get changed
@@ -173,11 +171,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
               switch (rgb_matrix_get_flags()) {
                 case LED_FLAG_ALL: {
-                    rgb_matrix_set_flags(LED_FLAG_KEYLIGHT);
+                    rgb_matrix_set_flags(LED_FLAG_KEYLIGHT | LED_FLAG_MODIFIER);
                     rgb_matrix_set_color_all(0, 0, 0);
                   }
                   break;
-                case LED_FLAG_KEYLIGHT: {
+                case LED_FLAG_KEYLIGHT | LED_FLAG_MODIFIER: {
                     rgb_matrix_set_flags(LED_FLAG_UNDERGLOW);
                     rgb_matrix_set_color_all(0, 0, 0);
                   }
